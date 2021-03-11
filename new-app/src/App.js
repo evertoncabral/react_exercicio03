@@ -1,5 +1,5 @@
 import "./App.css";
-import PromotionCard from "./components/Promotion/Card/Card";
+import PromotionCard from "components/Promotion/Card/Card";
 import "./App.css";
 
 const App = () => {
