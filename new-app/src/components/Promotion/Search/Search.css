@@ -1,0 +1,22 @@
+.promotion-search__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.promotion-search__input {
+  display: flex;
+  height: 42px;
+  border: 1 px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  font-size: 16px;
+}
+
+.promotion-search__header {
+    text-transform:  uppercase;
+    color:#888 ;
+}
