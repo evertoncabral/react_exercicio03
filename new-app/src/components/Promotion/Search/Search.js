@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Search.css";
 import PromotionList from "components/Promotion/List/List";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import useApi from "components/utils/useApi";
 
 const PromotionSearch = () => {
+  const mountRef = useRef(null);
+
   const [search, setSearch] = useState("");
   const [load, loadInfo] = useApi({
+    debounceDelay: 300,
+    debounced:true,
     url: "/promotions",
     method: "get",
     params: {
@@ -19,8 +22,14 @@ const PromotionSearch = () => {
   });
 
   useEffect(() => {
-    load();
-  }, [PromotionSearch]);
+    load({
+      debounced: mountRef.current,
+    });
+    if (!mountRef.current) {
+      mountRef.current = true;
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   return (
     <div className="promotion-search">

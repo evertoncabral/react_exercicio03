@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import useDebouncePromise from "./useDebouncePromise";
 
 const initialRequestInfor = {
   error: null,
@@ -10,6 +11,8 @@ const initialRequestInfor = {
 export default function useApi(config) {
   const [requestInfo, setRequestInfo] = useState(initialRequestInfor);
 
+  const debounceAxios = useDebouncePromise(axios, config.debounceDelay);
+
   async function call(localConfig) {
     setRequestInfo({
       ...initialRequestInfor,
@@ -18,12 +21,16 @@ export default function useApi(config) {
 
     let response = null;
 
+    const finalConfig = {
+      baseURL: "http://localhost:5000",
+      ...config,
+      ...localConfig,
+    };
+
+    const functionDebunceAxios = localConfig.debounced ? debounceAxios : axios;
+
     try {
-      response = await axios({
-        baseURL: "http://localhost:5000",
-        ...config,
-        ...localConfig,
-      });
+      response = await functionDebunceAxios(finalConfig);
       setRequestInfo({
         ...initialRequestInfor,
         data: response.data,
@@ -38,6 +45,7 @@ export default function useApi(config) {
     if (config.onCompleted) {
       config.onCompleted(response);
     }
+    return response;
   }
   return [call, requestInfo];
 }
