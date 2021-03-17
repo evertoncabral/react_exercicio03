@@ -28,7 +28,7 @@
       "url": "",
       "imageUrl": "https://cdn.gatry.com/gatry-static/promocao/imagem_url/9c4b176eb52bb4877e853cf36393d8fc.jpg"
     },
-    
+
     {
       "title": "Biotônico Fontoura Original Com 400ml",
       "url": "https://tidd.ly/3euJcz6",
@@ -41,12 +41,26 @@
     {
       "id": 1,
       "comment": "TELA HD",
-      "promotionId": 1
+      "promotionId": 1,
+      "userID":1
+    },
+    {
+        "id": 2,
+        "comment": "de R$ 599,90 \n por R$246,05à vista \n (5% de desconto) \n ou R$ 259,00 em 5x de R$ 51,80 sem juros",
+        "promotionId": 2,
+        "userID":2
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Will",
+      "avatarURL": "https://images-na.ssl-images-amazon.com/images/M/MV5BNTczMzk1MjU1MV5BMl5BanBnXkFtZTcwNDk2MzAyMg@@._V1_UY256_CR2,0,172,256_AL_.jpg"
     },
     {
       "id": 2,
-      "comment": "de R$ 599,90 \n por R$246,05à vista \n (5% de desconto) \n ou R$ 259,00 em 5x de R$ 51,80 sem juros",
-      "promotionId": 2
+      "name": "Joe",
+      "avatarURL": "https://uifaces.co/our-content/donated/1H_7AxP0.jpg"
     }
   ]
 }

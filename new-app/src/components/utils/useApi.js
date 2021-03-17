@@ -27,7 +27,7 @@ export default function useApi(config) {
       ...localConfig,
     };
 
-    const functionDebunceAxios = localConfig.debounced ? debounceAxios : axios;
+    const functionDebunceAxios = finalConfig.debounced ? debounceAxios : axios;
 
     try {
       response = await functionDebunceAxios(finalConfig);
