@@ -37,7 +37,7 @@ const PromotionModal = ({ promotionID, onClickClose }) => {
         },
       });
       setComment("");
-      load();
+      load({ quietly: true });
     } catch (error) {}
   }
 
@@ -50,7 +50,7 @@ const PromotionModal = ({ promotionID, onClickClose }) => {
         parentId,
       },
     });
-    load();
+    load({ quietly: true });
   }
 
   return (
@@ -60,6 +60,7 @@ const PromotionModal = ({ promotionID, onClickClose }) => {
           placeholder="comentário..."
           onChange={(event) => setComment(event.target.value)}
           value={comment}
+          disabled={sendCommentInfo.loading}
         />
         <button type="submit" disabled={sendCommentInfo.loading}>
           {sendCommentInfo.loading ? "Enviando.." : "Enviar"}
