@@ -18,10 +18,18 @@ export default function useApi(config) {
 
     const finalConfig = {
       baseURL: "http://localhost:5000",
+      upDateRequestInfor: (newInfo) => newInfo,
       ...config,
       ...localConfig,
     };
-    if (!finalConfig.quietly) {
+
+    if (finalConfig.isFetchMore) {
+      setRequestInfo({
+        ...initialRequestInfor,
+        data: requestInfo.data,
+        loading: true,
+      });
+    } else if (!finalConfig.quietly) {
       setRequestInfo({
         ...initialRequestInfor,
         loading: true,
@@ -32,15 +40,32 @@ export default function useApi(config) {
 
     try {
       response = await functionDebunceAxios(finalConfig);
-      setRequestInfo({
+
+      const newRequestInfo = {
         ...initialRequestInfor,
         data: response.data,
-      });
+      };
+
+      if (response.headers["x-total-count"] !== undefined) {
+        newRequestInfo.total = Number.parseInt(
+          response.headers["x-total-count"],
+          10
+        );
+      }
+
+      setRequestInfo(
+        finalConfig.upDateRequestInfor(newRequestInfo, requestInfo)
+      );
     } catch (error) {
-      setRequestInfo({
-        ...initialRequestInfor,
-        error,
-      });
+      setRequestInfo(
+        finalConfig.upDateRequestInfor(
+          {
+            ...initialRequestInfor,
+            error,
+          },
+          requestInfo
+        )
+      );
     }
 
     if (config.onCompleted) {

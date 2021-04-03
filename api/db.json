@@ -60,6 +60,12 @@
       "promotionID": 2,
       "comment": "",
       "id": 4
+    },
+    {
+      "userID": 1,
+      "promotionID": 2,
+      "comment": "facac",
+      "id": 5
     }
   ],
   "users": [
