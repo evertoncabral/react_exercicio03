@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./Form.css";
 import { useHistory } from "react-router-dom";
 import useApi from "components/utils/useApi";
+import { Formik, Form, Field } from "formik";
+import schema from "./schema";
 
 const initialValue = {
   title: "",
@@ -10,14 +12,10 @@ const initialValue = {
   price: "",
 };
 const PromotionForm = ({ id }) => {
-  const [values, setValues] = useState(id ? null : initialValue);
   const history = useHistory();
-  const [load] = useApi({
+  const [load, loadInfo] = useApi({
     url: `/promotions/${id}`,
     method: "get",
-    onCompleted: (response) => {
-      setValues(response.data);
-    },
   });
 
   const [save, saveInfo] = useApi({
@@ -37,17 +35,13 @@ const PromotionForm = ({ id }) => {
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  function onChange(event) {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
-  }
-
-  function onSubmit(event) {
-    event.preventDefault();
+  function onSubmit(formValues) {
     save({
-      data:values,
+      data: formValues,
     });
   }
+
+  const values = id ? loadInfo.data : initialValue;
 
   return (
     <div>
@@ -56,52 +50,36 @@ const PromotionForm = ({ id }) => {
       {!values ? (
         <div>Carregando......</div>
       ) : (
-        <form onSubmit={onSubmit}>
-          {saveInfo.loading && <span>Salvando dados...</span>}
-          <div className="propotion-form__group">
-            <label htmlfor="title">Título</label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              onChange={onChange}
-              value={values.title}
-            />
-          </div>
-          <div className="propotion-form__group">
-            <label htmlfor="url">Link</label>
-            <input
-              id="url"
-              name="url"
-              type="text"
-              onChange={onChange}
-              value={values.url}
-            />
-          </div>
-          <div className="propotion-form__group">
-            <label htmlfor="imageUrl">Imagem (URL)</label>
-            <input
-              id="imageUrl"
-              name="imageUrl"
-              type="text"
-              onChange={onChange}
-              value={values.imageUrl}
-            />
-          </div>
-          <div className="propotion-form__group">
-            <label htmlfor="price">Preço</label>
-            <input
-              id="price"
-              name="price"
-              type="number"
-              onChange={onChange}
-              value={values.price}
-            />
-          </div>
-          <div>
-            <button type="submit">Salvar</button>
-          </div>
-        </form>
+        <Formik
+          initialValues={values}
+          onSubmit={onSubmit}
+          validationSchema={schema}
+          render={({ errors, touched }) => (
+            <Form>
+              {saveInfo.loading && <span>Salvando dados...</span>}
+              <div className="propotion-form__group">
+                <label htmlfor="title">Título</label>
+                <Field id="title" name="title" type="text" />
+                {errors.title && <span className="promotion-form_error-message">{errors.title}</span>}
+              </div>
+              <div className="propotion-form__group">
+                <label htmlfor="url">Link</label>
+                <Field id="url" name="url" type="text" />
+              </div>
+              <div className="propotion-form__group">
+                <label htmlfor="imageUrl">Imagem (URL)</label>
+                <Field id="imageUrl" name="imageUrl" type="text" />
+              </div>
+              <div className="propotion-form__group">
+                <label htmlfor="price">Preço</label>
+                <Field id="price" name="price" type="number" />
+              </div>
+              <div>
+                <button type="submit">Salvar</button>
+              </div>
+            </Form>
+          )}
+        />
       )}
     </div>
   );

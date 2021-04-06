@@ -18,3 +18,8 @@
  height: 36px;
  padding: 0 10px;
 }
+
+.promotion-form_error-message{
+  color: red;
+  font-size: 14px;
+}
